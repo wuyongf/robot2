@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+    <!--yf:-->
+    <node name="spawn_boundary" pkg="gazebo_ros" type="spawn_model" args="-sdf
+      -file $(find robot2_gazebo)/sdf/scene1/boundary.sdf -model boundary" output="screen" />
+    <node name="spawn_box_base" pkg="gazebo_ros" type="spawn_model" args="-sdf
+      -file $(find robot2_gazebo)/sdf/scene1/box_base.sdf -model box_base" output="screen" />
+    <node name="spawn_cylinder1" pkg="gazebo_ros" type="spawn_model" args="-sdf
+      -file $(find robot2_gazebo)/sdf/scene1/cylinder1.sdf -model cylinder1" output="screen" />
+    <node name="spawn_cylinder2" pkg="gazebo_ros" type="spawn_model" args="-sdf
+      -file $(find robot2_gazebo)/sdf/scene1/cylinder2.sdf -model cylinder2" output="screen" />
+    <node name="spawn_cylinder3" pkg="gazebo_ros" type="spawn_model" args="-sdf
+      -file $(find robot2_gazebo)/sdf/scene1/cylinder3.sdf -model cylinder3" output="screen" />
+    <node name="spawn_cylinder4" pkg="gazebo_ros" type="spawn_model" args="-sdf
+      -file $(find robot2_gazebo)/sdf/scene1/cylinder4.sdf -model cylinder4" output="screen" />
+    <node name="spawn_cylinder5" pkg="gazebo_ros" type="spawn_model" args="-sdf
+      -file $(find robot2_gazebo)/sdf/scene1/cylinder5.sdf -model cylinder5" output="screen" />
+</launch>

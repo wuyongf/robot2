@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- yf: global parameters -->
+  <arg name="gui" default="true" />
+  <arg name="tf_prefix" default="" doc="tf_prefix to be used by gazebo plugins and in the robot's urdf etc. //yf: namespace" />
+
+  <!-- yf:global parameters: ugv pos -->
+  <arg name="robot_x"   default="0.0" />
+  <arg name="robot_y"   default="-2.0" />
+  <arg name="robot_yaw" default="0.0" />
+
+  <include file="$(find mir_gazebo)/launch/mir_empty_world.launch">
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="tf_prefix" value="$(arg tf_prefix)" />
+
+    <!-- yf: ugv -->
+    <arg name="robot_x" value="$(arg robot_x)" />
+    <arg name="robot_y" value="$(arg robot_y)" />
+    <arg name="robot_yaw" value="$(arg robot_yaw)" />
+  </include>
+
+  <!-- yf: gazebo environment -->
+  <include file="$(find robot2_gazebo)/launch/includes/spawn_scene2.launch.xml" />
+</launch>
+

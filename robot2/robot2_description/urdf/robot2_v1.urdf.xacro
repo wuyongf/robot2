@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- ugv -->
+  <xacro:include filename="$(find mir_description)/urdf/include/mir_100_v1.urdf.xacro" />
+
+  <!-- Spawn camera -->
+  <xacro:include filename="$(find realsense2_description)/urdf/test_d435_camera.urdf.xacro" />
+
+  <!-- Spawn top_module -->
+  <xacro:include filename="$(find robot2_description)/config/macro.top_module.xacro" />
+  <xacro:top_module />
+
+  <!-- Spawn gripper_assembly -->
+  <xacro:include filename="$(find robot2_description)/config/macro.gripper_assembly.xacro" />
+  <xacro:gripper_assembly />
+
+  <!-- Xcro: robot2 -->
+  <xacro:macro name="robot2" params="prefix">
+
+    <!--yf: Attach camera to the top_module -->
+    <joint name="camera_top_module_joint" type="fixed">
+      <parent link="top_module_link" />
+      <child link="camera_base_link"/>
+      <origin xyz="0 0.41 0.1" rpy="0 0 1.57"/>
+    </joint>
+
+    <!--yf: Attach top_module to the ugv -->
+    <joint name="top_module_surface_joint" type="fixed">
+      <parent link="${prefix}surface" />
+      <child link="top_module_link"/>
+      <origin xyz="0 0 0" rpy="0 0 -1.57"/>
+    </joint>
+
+    <!--yf: Attach gripper_mount_ud to the top_module -->
+    <joint name="gripper_mount_top_module_joint" type="fixed">
+      <parent link="top_module_link" />
+      <child link="gripper_mount_link"/>
+      <origin xyz="0 -0.047 0.1" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="ud_gripper_mount_joint" type="prismatic">
+      <parent link="gripper_mount_link" />
+      <child link="gripper_mount_ud_link"/>
+      <origin xyz="0 0.58 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="10000" lower="-0.24" upper="0.96" velocity="0.5"/>
+      <!-- alpha tested velocity and effort limits -->
+      <!-- <safety_controller k_position="100" k_velocity="2000000" soft_lower_limit="0.0115" soft_upper_limit="0.325"/>
+      <calibration falling="0.00475"/>
+      <dynamics damping="20000.0"/> -->
+    </joint>
+
+    <!-- <joint name="ud_gripper_mount_joint" type="fixed">
+      <parent link="gripper_mount_link" />
+      <child link="gripper_mount_ud_link"/>
+      <origin xyz="0 0.58 0" rpy="0 0 0"/>
+    </joint> -->
+
+
+
+  </xacro:macro>
+
+</robot>
