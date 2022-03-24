@@ -1,7 +1,7 @@
 <sdf version='1.6'>
 
   <model name='cylinder5'>
-    <pose frame=''>0.6 0.74 0.4 0 -0 0</pose>
+    <pose frame=''>1.669570 0.739973 0.739973 0 -0 0</pose>
     <link name='link'>
       <inertial>
         <mass>0.5</mass>

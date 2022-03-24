@@ -2,17 +2,17 @@
 <launch>
     <!--yf:-->
     <node name="spawn_boundary" pkg="gazebo_ros" type="spawn_model" args="-sdf
-      -file $(find robot2_gazebo)/sdf/competetion/boundary.sdf -model boundary" output="screen" />
+      -file $(find robot2_gazebo)/sdf/scene2/boundary.sdf -model boundary" output="screen" />
     <node name="spawn_box_base" pkg="gazebo_ros" type="spawn_model" args="-sdf
-      -file $(find robot2_gazebo)/sdf/competetion/box_base.sdf -model box_base" output="screen" />
+      -file $(find robot2_gazebo)/sdf/scene2/box_base.sdf -model box_base" output="screen" />
     <node name="spawn_cylinder1" pkg="gazebo_ros" type="spawn_model" args="-sdf
-      -file $(find robot2_gazebo)/sdf/competetion/cylinder1.sdf -model cylinder1" output="screen" />
+      -file $(find robot2_gazebo)/sdf/scene2/cylinder1.sdf -model cylinder1" output="screen" />
     <node name="spawn_cylinder2" pkg="gazebo_ros" type="spawn_model" args="-sdf
-      -file $(find robot2_gazebo)/sdf/competetion/cylinder2.sdf -model cylinder2" output="screen" />
+      -file $(find robot2_gazebo)/sdf/scene2/cylinder2.sdf -model cylinder2" output="screen" />
     <node name="spawn_cylinder3" pkg="gazebo_ros" type="spawn_model" args="-sdf
-      -file $(find robot2_gazebo)/sdf/competetion/cylinder3.sdf -model cylinder3" output="screen" />
+      -file $(find robot2_gazebo)/sdf/scene2/cylinder3.sdf -model cylinder3" output="screen" />
     <node name="spawn_cylinder4" pkg="gazebo_ros" type="spawn_model" args="-sdf
-      -file $(find robot2_gazebo)/sdf/competetion/cylinder4.sdf -model cylinder4" output="screen" />
+      -file $(find robot2_gazebo)/sdf/scene2/cylinder4.sdf -model cylinder4" output="screen" />
     <node name="spawn_cylinder5" pkg="gazebo_ros" type="spawn_model" args="-sdf
-      -file $(find robot2_gazebo)/sdf/competetion/cylinder5.sdf -model cylinder5" output="screen" />
+      -file $(find robot2_gazebo)/sdf/scene2/cylinder5.sdf -model cylinder5" output="screen" />
 </launch>
