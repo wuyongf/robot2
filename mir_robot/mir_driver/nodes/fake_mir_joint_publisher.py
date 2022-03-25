@@ -22,6 +22,7 @@ def fake_mir_joint_publisher():
             prefix + 'bl_caster_wheel_joint',
             prefix + 'br_caster_rotation_joint',
             prefix + 'br_caster_wheel_joint',
+            prefix + 'ud_gripper_mount_joint',
         ]
         js.position = [0.0 for _ in js.name]
         js.velocity = [0.0 for _ in js.name]

@@ -42,28 +42,29 @@
     <joint name="ud_gripper_mount_joint" type="prismatic">
       <parent link="gripper_mount_link" />
       <child link="gripper_mount_ud_link"/>
-      <origin xyz="0 0.58 0" rpy="0 0 0"/>
+      <origin xyz="0 0.58 -0.24" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
-      <limit effort="10000" lower="-0.24" upper="0.96" velocity="0.5"/>
-      <!-- alpha tested velocity and effort limits -->
-      <!-- <safety_controller k_position="100" k_velocity="2000000" soft_lower_limit="0.0115" soft_upper_limit="0.325"/>
-      <calibration falling="0.00475"/>
-      <dynamics damping="20000.0"/> -->
+      <limit effort="10000" lower="0" upper="1.2" velocity="0.5"/>
     </joint>
 
-    <!-- <transmission name="ud_gripper_mount_trans" type="robot2/SimpleTransmission">
-      <actuator name="ud_gripper_mount_motor"/>
-      <joint name="ud_gripper_mount_joint"/>
-      <mechanicalReduction>-47641.53</mechanicalReduction>
-      <simulated_actuated_joint name="torso_lift_motor_screw_joint" simulated_reduction="3141.6"/>
-    </transmission> -->
+    <transmission name="trans_ud">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="ud_gripper_mount_joint">
+        <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
+        <hardwareInterface>EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="motor_ud">
+        <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
+        <hardwareInterface>EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
 
     <!-- <joint name="ud_gripper_mount_joint" type="fixed">
       <parent link="gripper_mount_link" />
       <child link="gripper_mount_ud_link"/>
       <origin xyz="0 0.58 0" rpy="0 0 0"/>
     </joint> -->
-
 
 
   </xacro:macro>
