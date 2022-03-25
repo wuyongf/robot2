@@ -23,6 +23,10 @@
         </geometry>
       </collision>
     </link>
+    <gazebo reference="gripper_mount_link">
+      <!-- <material>Gazebo/Grey</material> -->
+      <material>PR2/Grey3</material>
+    </gazebo>
 
     <!-- yf: Define gripper_mount_ud link -->
     <link name="gripper_mount_ud_link">
@@ -44,7 +48,9 @@
         </geometry>
       </collision>
     </link>
-
+    <gazebo reference="gripper_mount_ud_link">
+      <material>Gazebo/Grey</material>
+    </gazebo>
 
 
     <!-- yf: Define gripper_L link -->

@@ -145,13 +145,6 @@ void RSCameraNode::pointcloud_callback(const sensor_msgs::PointCloud2ConstPtr& c
             }
         }
 
-        sensor_msgs::PointCloud2 cluster_cloud;
-        cluster_cloud.header = cloud->header;
-        pcl::toROSMsg(*cloud_cluster, cluster_cloud);
-        
-        object.pointcloud.header = cloud->header;
-        object.pointcloud = cluster_cloud;
-
         detected_object_list.objects.push_back(object);
     }
     detected_object_list_pub.publish(detected_object_list);

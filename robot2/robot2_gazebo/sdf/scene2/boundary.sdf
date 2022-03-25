@@ -7,7 +7,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>/home/yf/.gazebo/models/boundary400/boundary400.stl</uri>
+            <uri>model://boundary400.stl</uri>
           </mesh>
         </geometry>
       </collision>
@@ -15,7 +15,7 @@
        <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>/home/yf/.gazebo/models/boundary400/boundary400.stl</uri>
+            <uri>model://boundary400.stl</uri>
           </mesh>
         </geometry>
         <material>

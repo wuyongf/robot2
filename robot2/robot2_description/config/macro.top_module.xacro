@@ -24,6 +24,10 @@
       </collision>
     </link>
 
+    <gazebo reference="top_module_link">
+      <material>Gazebo/Grey</material>
+    </gazebo>
+
   </xacro:macro>
 
 </robot>

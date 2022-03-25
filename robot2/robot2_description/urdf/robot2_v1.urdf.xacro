@@ -51,6 +51,13 @@
       <dynamics damping="20000.0"/> -->
     </joint>
 
+    <!-- <transmission name="ud_gripper_mount_trans" type="robot2/SimpleTransmission">
+      <actuator name="ud_gripper_mount_motor"/>
+      <joint name="ud_gripper_mount_joint"/>
+      <mechanicalReduction>-47641.53</mechanicalReduction>
+      <simulated_actuated_joint name="torso_lift_motor_screw_joint" simulated_reduction="3141.6"/>
+    </transmission> -->
+
     <!-- <joint name="ud_gripper_mount_joint" type="fixed">
       <parent link="gripper_mount_link" />
       <child link="gripper_mount_ud_link"/>
