@@ -42,9 +42,9 @@
   </node>
 
   <!-- yf: joint_state_gui -->
-  <!-- <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui">
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui">
     <param name="use_gui" value="True" />
-  </node> -->
+  </node>
 
   <!-- yf: param for camera -->
   <!-- Robot state publisher -->
