@@ -9,10 +9,10 @@
   <arg name="prefix" value="$(arg tf_prefix)/" if="$(eval tf_prefix != '')" /> <!-- $(arg prefix) is used in all the config files! TODO: For multiple robots, create groups when loading the parameters to overwrite the arg? -->
   <arg name="prefix" value=""                  unless="$(eval tf_prefix != '')" />
 
-  <!-- yf: -->
+  <!-- nw: -->
   <arg name="model_name" default="robot2" doc="Name of the Gazebo robot model (needs to be different for each robot)" />
 
-  <!-- yf: -->
+  <!-- nw: -->
   <!-- Load URDF -->
   <include file="$(find robot2_description)/launch/upload_robot2_urdf.launch">
     <arg name="tf_prefix" value="$(arg tf_prefix)" />
@@ -25,12 +25,10 @@
   <!-- Load ros_control controller configurations -->
   <rosparam file="$(find mir_description)/config/joint_state_controller.yaml" command="load" />
   <rosparam file="$(find mir_description)/config/diffdrive_controller.yaml" command="load" subst_value="true" />
-  <!-- yf: gazeo_ros controller configuration for gripper -->
-  <rosparam file="$(find robot2_description)/config/gripper_controller.yaml" command="load" subst_value="true" />
 
   <!-- Start the controllers -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen"
-    args="joint_state_controller mobile_base_controller ud_gripper_mount_controller"/>
+    args="joint_state_controller mobile_base_controller"/>
 
   <!-- EKF -->
   <include file="$(find mir_gazebo)/launch/includes/ekf.launch.xml">
@@ -43,24 +41,13 @@
     <param name="rate" value="200.0" />
   </node>
 
-  <!-- yf: testing -->
-  <!-- <node name="ud_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-    <rosparam param="source_list">[robot2/gripper_states]</rosparam>
-    <param name="rate" value="200.0" />
-  </node> -->
-
-  <!-- yf: joint_state_gui [conflict]-->
-  <!-- <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui">
-    <param name="use_gui" value="True" />
-  </node> -->
-
-  <!-- yf: param for camera -->
+  <!-- nw: param for camera -->
   <!-- Robot state publisher -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" >
     <param name="publish_frequency" type="double" value="30.0" />
   </node>
 
-  <!-- yf: rviz for camera -->
+  <!-- nw: rviz for camera -->
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find realsense2_description)/rviz/urdf.rviz" required="true" />
 
   <!-- Load teleop -->

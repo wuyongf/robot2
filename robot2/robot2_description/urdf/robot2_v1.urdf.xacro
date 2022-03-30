@@ -1,72 +1,34 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <!-- ugv -->
+  <!-- moving base -->
   <xacro:include filename="$(find mir_description)/urdf/include/mir_100_v1.urdf.xacro" />
 
-  <!-- Spawn camera -->
+  <!-- include third-party camera plugin -->
   <xacro:include filename="$(find realsense2_description)/urdf/test_d435_camera.urdf.xacro" />
 
-  <!-- Spawn top_module -->
+  <!-- include top_module -->
   <xacro:include filename="$(find robot2_description)/config/macro.top_module.xacro" />
   <xacro:top_module />
-
-  <!-- Spawn gripper_assembly -->
-  <xacro:include filename="$(find robot2_description)/config/macro.gripper_assembly.xacro" />
-  <xacro:gripper_assembly />
 
   <!-- Xcro: robot2 -->
   <xacro:macro name="robot2" params="prefix">
 
-    <!--yf: Attach camera to the top_module -->
+    <!--Attach camera to the top_module -->
     <joint name="camera_top_module_joint" type="fixed">
       <parent link="top_module_link" />
       <child link="camera_base_link"/>
       <origin xyz="0 0.41 0.1" rpy="0 0 1.57"/>
     </joint>
 
-    <!--yf: Attach top_module to the ugv -->
+    <!--Attach top_module to the ugv -->
     <joint name="top_module_surface_joint" type="fixed">
       <parent link="${prefix}surface" />
       <child link="top_module_link"/>
       <origin xyz="0 0 0" rpy="0 0 -1.57"/>
     </joint>
 
-    <!--yf: Attach gripper_mount_ud to the top_module -->
-    <joint name="gripper_mount_top_module_joint" type="fixed">
-      <parent link="top_module_link" />
-      <child link="gripper_mount_link"/>
-      <origin xyz="0 -0.047 0.1" rpy="0 0 0"/>
-    </joint>
-
-    <joint name="ud_gripper_mount_joint" type="prismatic">
-      <parent link="gripper_mount_link" />
-      <child link="gripper_mount_ud_link"/>
-      <origin xyz="0 0.58 -0.24" rpy="0 0 0"/>
-      <axis xyz="0 0 1"/>
-      <limit effort="10000" lower="0" upper="1.2" velocity="0.5"/>
-    </joint>
-
-    <transmission name="trans_ud">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="ud_gripper_mount_joint">
-        <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
-        <hardwareInterface>EffortJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="motor_ud">
-        <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
-        <hardwareInterface>EffortJointInterface</hardwareInterface>
-        <mechanicalReduction>1</mechanicalReduction>
-      </actuator>
-    </transmission>
-
-    <!-- <joint name="ud_gripper_mount_joint" type="fixed">
-      <parent link="gripper_mount_link" />
-      <child link="gripper_mount_ud_link"/>
-      <origin xyz="0 0.58 0" rpy="0 0 0"/>
-    </joint> -->
-
-
   </xacro:macro>
 
 </robot>
+
