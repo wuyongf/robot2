@@ -8,11 +8,9 @@
 // PointCloud includes
 #include <pcl_ros/point_cloud.h>
 #include <pcl/conversions.h>
-#include <pcl/point_types.h>
 
 #include <pcl/ModelCoefficients.h>
 #include <pcl/point_types.h>
-#include <pcl/io/pcd_io.h>
 #include <pcl/filters/extract_indices.h>
 #include <pcl/filters/passthrough.h>
 #include <pcl/filters/voxel_grid.h>
@@ -45,10 +43,10 @@ private:
   ros::Publisher detected_object_cloud_pub;
 
   // subscriber
-  ros::Subscriber pointcloud_sub_;
+  ros::Subscriber pointcloud_sub;
 
   // callbacks
-  void pointcloud_callback(const sensor_msgs::PointCloud2ConstPtr& cloud);
+  void pointcloud_callback(const sensor_msgs::PointCloud2ConstPtr& input_cloud);
 
   // initializer
   void initForROS();

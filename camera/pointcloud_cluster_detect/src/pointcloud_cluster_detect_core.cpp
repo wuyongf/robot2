@@ -3,22 +3,13 @@
 #include <pointcloud_cluster_detect/DetectedObjectArray.h>
 #include <pointcloud_cluster_detect/DetectedObject.h>
 
-
 namespace pointcloud_cluster_detect
 {
 // Constructor
 RSCameraNode::RSCameraNode()
     : nh_("~")
 {
-    initForROS();
-}
-
-RSCameraNode::~RSCameraNode()
-{}
-
-void RSCameraNode::initForROS()
-{
-    pointcloud_sub_ = nh_.subscribe("/camera/depth/color/points", 5, &RSCameraNode::pointcloud_callback, this);
+    pointcloud_sub = nh_.subscribe("/camera/depth/color/points", 1, &RSCameraNode::pointcloud_callback, this);
 
     detected_object_list_pub = nh_.advertise<pointcloud_cluster_detect::DetectedObjectArray>("/detected_object_list", 1);
     detected_object_cloud_pub = nh_.advertise<sensor_msgs::PointCloud2>("/detected_object_cloud", 1);
@@ -27,17 +18,21 @@ void RSCameraNode::initForROS()
     nh_.param("target_width_threshold", target_width_threshold_, 0.05);
 }
 
-void RSCameraNode::pointcloud_callback(const sensor_msgs::PointCloud2ConstPtr& cloud)
+// Destructor
+RSCameraNode::~RSCameraNode()
+{}
+
+void RSCameraNode::pointcloud_callback(const sensor_msgs::PointCloud2ConstPtr& input_cloud)
 {
     // Read in the cloud data
-    pcl::PointCloud<PointT>::Ptr current_sensor_cloud_ptr(new pcl::PointCloud<PointT>);
-    pcl::fromROSMsg(*cloud, *current_sensor_cloud_ptr);
+    pcl::PointCloud<PointT>::Ptr cloud(new pcl::PointCloud<PointT>), cloud_f(new pcl::PointCloud<PointT>);
+    pcl::fromROSMsg(*input_cloud, *cloud);
+
 
     // Build a passthrough filter to remove spurious NaNs
     pcl::PassThrough<PointT> pass;
     pcl::PointCloud<PointT>::Ptr cloud_filtered(new pcl::PointCloud<PointT>);
-    pcl::PointCloud<PointT>::Ptr cloud_f(new pcl::PointCloud<PointT>);
-    pass.setInputCloud(current_sensor_cloud_ptr);
+    pass.setInputCloud(cloud);
     pass.setFilterFieldName("z");
     pass.setFilterLimits(0, 8);
     pass.filter(*cloud_filtered);
@@ -101,7 +96,7 @@ void RSCameraNode::pointcloud_callback(const sensor_msgs::PointCloud2ConstPtr& c
     ec.extract(cluster_indices);
 
     sensor_msgs::PointCloud2 output_cloud;
-    output_cloud.header = cloud->header;
+    output_cloud.header = input_cloud->header;
     pcl::toROSMsg(*cloud_filtered, output_cloud);
     detected_object_cloud_pub.publish(output_cloud);
 
@@ -117,12 +112,12 @@ void RSCameraNode::pointcloud_callback(const sensor_msgs::PointCloud2ConstPtr& c
 
         for (int i = 0; i < cloud_cluster->size(); i++)
         {
-            if ((*cloud_cluster)[i].x > max_x) max_x = (*cloud_cluster)[i].x;
-            if ((*cloud_cluster)[i].x < min_x) min_x = (*cloud_cluster)[i].x;
-            if ((*cloud_cluster)[i].y > max_y) max_y = (*cloud_cluster)[i].y;
-            if ((*cloud_cluster)[i].y < min_y) min_y = (*cloud_cluster)[i].y;
-            if ((*cloud_cluster)[i].z > max_z) max_z = (*cloud_cluster)[i].z;
-            if ((*cloud_cluster)[i].z < min_z) min_z = (*cloud_cluster)[i].z;
+            if (cloud_cluster->at(i).x > max_x) max_x = cloud_cluster->at(i).x;
+            if (cloud_cluster->at(i).x < min_x) min_x = cloud_cluster->at(i).x;
+            if (cloud_cluster->at(i).y > max_y) max_y = cloud_cluster->at(i).y;
+            if (cloud_cluster->at(i).y < min_y) min_y = cloud_cluster->at(i).y;
+            if (cloud_cluster->at(i).z > max_z) max_z = cloud_cluster->at(i).z;
+            if (cloud_cluster->at(i).z < min_z) min_z = cloud_cluster->at(i).z;
         }
 
         pointcloud_cluster_detect::DetectedObject object;

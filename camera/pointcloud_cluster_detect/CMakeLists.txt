@@ -11,12 +11,10 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   pcl_ros
   roscpp
-  std_msgs
   sensor_msgs
+  std_msgs
 )
-find_package(PCL REQUIRED)
-find_package(Boost REQUIRED COMPONENTS thread)
-find_package(OpenCV REQUIRED)
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -74,9 +72,9 @@ add_message_files(
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
-  std_msgs
   geometry_msgs
   sensor_msgs
+  std_msgs
 )
 
 ################################################
@@ -109,11 +107,9 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
-#  LIBRARIES rs_camera_pcl
-  CATKIN_DEPENDS roscpp std_msgs
-  DEPENDS
-    Boost
+ INCLUDE_DIRS include
+#  LIBRARIES pointcloud_cluster_detect2
+ CATKIN_DEPENDS geometry_msgs pcl_ros roscpp sensor_msgs std_msgs
 #  DEPENDS system_lib
 )
 
@@ -126,13 +122,11 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
-  ${PCL_INCLUDE_DIRS}
-  ${Boost_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/rs_camera_pcl.cpp
+#   src/${PROJECT_NAME}/pointcloud_cluster_detect2.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -144,8 +138,8 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME} 
-  src/pointcloud_cluster_detect_core.cpp
   src/pointcloud_cluster_detect_node.cpp
+  src/pointcloud_cluster_detect_core.cpp
 )
 
 ## Rename C++ executable without prefix
@@ -161,8 +155,6 @@ add_executable(${PROJECT_NAME}
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
-  ${Boost_LIBRARIES}
-  ${PCL_LIBRARIES}
 )
 
 #############
@@ -212,7 +204,7 @@ target_link_libraries(${PROJECT_NAME}
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_rs_camera_pcl.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_pointcloud_cluster_detect2.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
