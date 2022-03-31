@@ -1,32 +1,244 @@
-<?xml version="1.0"?>
-<robot xmlns:xacro="http://ros.org/wiki/xacro"
-       name="mir_100" >
+<?xml version='1.0'?>
+<robot name="robot2" xmlns:xacro="http://ros.org/wiki/xacro">
+ <xacro:include filename="$(find robot2_description)/urdf/robot2.gazebo.xacro"/>
+ <xacro:include filename="$(find robot2_description)/urdf/common_properties.xacro"/>
+ <!-- Spawn camera -->
+ <xacro:include filename="$(find realsense2_description)/urdf/test_d435_camera.urdf.xacro" />
 
-  <!-- MiR100 base -->
-  <!--xacro:include filename="$(find mir_description)/urdf/include/mir_100_v1.urdf.xacro" /-->
-  <xacro:include filename="$(find robot2_description)/urdf/robot2_v1.urdf.xacro" />
-  <xacro:include filename="$(find mir_description)/urdf/include/common.gazebo.xacro" />
+ <!-- base_footpint setup -->
+ <link name="base_footprint"/>
+ <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0.0 0.0 0.13" rpy="0 0 0"/>
+ </joint>
 
-  <xacro:arg name="tf_prefix" default="" />
-  <xacro:property name="tf_prefix_" value="$(arg tf_prefix)" />
-  <xacro:if value="${tf_prefix_ == ''}">
-    <xacro:property name="prefix" value="" />
-  </xacro:if>
-  <xacro:unless value="${tf_prefix_ == ''}">
-    <xacro:property name="prefix" value="${tf_prefix_}/" />
-  </xacro:unless>
+ <!-- Base Link -->
+ <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 3.14" />
+      <geometry>
+          <mesh filename="package://robot2_description/meshes/bases/robot2_board_2.stl" scale="1 1 1"/>
+      </geometry>
+    </visual>
+    <!-- Base collision, mass and inertia -->
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 3.14" />
+      <geometry>
+          <mesh filename="package://robot2_description/meshes/bases/robot2_board_2.stl" scale="1 1 1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="5.0"/>
+      <inertia ixx="0.13" ixy="0.0" ixz="0.0" iyy="0.21" iyz="0.0" izz="0.13"/>
+    </inertial>
+ </link>
 
-  <xacro:mir_100 prefix="${prefix}"/>
-  <xacro:controller_plugin_gazebo robot_namespace=""/>
+  <link name="caster1">
+   <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.065" />
+      </geometry>
+    </visual>
+    <!-- Caster1 collision, mass and inertia -->
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.065" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.00169" ixy="0.0" ixz="0.0" iyy="0.00169" iyz="0.0" izz="0.00169"/>
+    </inertial>
+  </link>
 
-  <!-- yf: param for xacro:robot2 -->
-  <xacro:robot2 prefix="${prefix}"/>
+  <joint name="caster_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="caster1"/>
+    <origin xyz="-0.2 0 -0.065" rpy="0 0 0"/>
+  </joint>
 
-  <!-- instead of the controller_plugin_gazebo, you can use the diffdrive controller like this:
-    <xacro:diff_controller_plugin_gazebo prefix=""
-      left_wheel_joint="left_wheel_joint"
-      right_wheel_joint="right_wheel_joint"
-      wheel_separation="${2*mir_100_act_wheel_dy}"
-      wheel_radius="${mir_100_act_wheel_radius}"/>
-  -->
+  <!-- IMU  -->
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="-0.032 0 0.068" rpy="0 0 0"/>
+  </joint>
+
+  <link name="imu_link"/>
+
+  <!-- Right Wheel -->
+  <link name="right_wheel">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.570795 0 0" />
+      <geometry>
+          <cylinder length="0.05" radius="0.1"/>
+      </geometry>
+    </visual>
+    <!-- Right Wheel collision, mass and inertia -->
+    <collision>
+     <origin xyz="0 0 0" rpy="1.570795 0 0" />
+      <geometry>
+          <cylinder length="0.05" radius="0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.005" iyz="0.0" izz="0.005"/>
+    </inertial>
+  </link>
+
+  <!-- Right Wheel joint -->
+  <joint name="joint_right_wheel" type="continuous">
+    <parent link="base_link"/>
+    <child link="right_wheel"/>
+    <origin xyz="0.2 -0.225 -0.030" rpy="0 0 0" />
+    <axis xyz="0 1 0" />
+  </joint>
+
+
+  <!-- Left Wheel -->
+  <link name="left_wheel">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.570795 0 0" />
+      <geometry>
+          <cylinder length="0.05" radius="0.1"/>
+      </geometry>
+    </visual>
+    <!-- Left Wheel collision, mass and inertia -->
+    <collision>
+      <origin xyz="0 0 0" rpy="1.570795 0 0" />
+      <geometry>
+          <cylinder length="0.05" radius="0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.005" iyz="0.0" izz="0.005"/>
+    </inertial>
+  </link>
+
+  <!-- Left Wheel joint -->
+  <joint name="joint_left_wheel" type="continuous">
+    <parent link="base_link"/>
+    <child link="left_wheel"/>
+    <origin xyz="0.2 0.225 -0.030" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+
+  <!-- Lidar Stand-->
+ <joint name="scan_stand_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_scan_stand"/>
+    <origin xyz="0.325 0 0.00" rpy="0 0 0"/>
+  </joint>
+
+  <link name="base_scan_stand">
+    <visual>
+      <origin xyz="0 0 0.0" rpy="0 0 0"/>
+      <geometry>
+          <box size="0.05 0.3 0.1" />
+       </geometry>
+     </visual>
+
+    <collision>
+      <origin xyz="0 0 0.0" rpy="0 0 0"/>
+      <geometry>
+          <box size="0.05 0.3 0.1" />
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="1.0" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+               iyy="0.001" iyz="0.0"
+               izz="0.001" />
+    </inertial>
+  </link>
+<!-- back stand -->
+  <joint name="back_stand_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="back_stand"/>
+    <origin xyz="-0.275 0 0.085" rpy="0 0 0"/>
+  </joint>
+
+  <link name="back_stand">
+    <visual>
+      <origin xyz="0 0 0.0" rpy="0 0 0"/>
+      <geometry>
+          <box size="0.05 0.05 0.05" />
+       </geometry>
+     </visual>
+
+    <collision>
+      <origin xyz="0 0 0.0" rpy="0 0 0"/>
+      <geometry>
+          <box size="0.05 0.05 0.05" />
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0.5" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+               iyy="0.001" iyz="0.0"
+               izz="0.001" />
+    </inertial>
+  </link>
+
+  <!-- Lidar
+  <joint name="scan_joint" type="fixed">
+    <parent link="base_scan_stand"/>
+    <child link="base_scan"/>
+    <origin xyz="0 0 0.06" rpy="0 0 0"/>
+  </joint> -->
+
+  <!-- Lidar -->
+  <joint name="scan_joint" type="fixed">
+    <parent link="back_stand"/>
+    <child link="base_scan"/>
+    <origin xyz="0.0 0.0 0.0375" rpy="0 0 3.14"/>
+  </joint>
+
+  <link name="base_scan">
+    <visual>
+      <origin xyz="0 0 0.0" rpy="0 0 0"/>
+      <geometry>
+	 <cylinder length="0.030" radius="0.02"/>
+      </geometry>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.030" radius="0.02"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0.2" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+               iyy="0.001" iyz="0.0"
+               izz="0.001" />
+    </inertial>
+  </link>
+
+<!--Attach camera to the top_module -->
+  <!-- <joint name="camera_top_module_joint" type="fixed">
+    <parent link="base_scan_stand" />
+    <child link="camera_base_link"/>
+    <origin xyz="0.02 0 0.00" rpy="0 0 0"/>
+  </joint> -->
+
+  <joint name="camera_top_module_joint" type="fixed">
+    <parent link="base_scan_stand" />
+    <child link="camera_base_link"/>
+    <origin xyz="0.01 0 0.05" rpy="0 0 0"/>
+  </joint>
+
 </robot>

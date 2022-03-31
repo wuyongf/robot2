@@ -1,0 +1,31 @@
+<launch>
+  <arg name="model" default="$(env ROBOT_MODEL)" doc="model type [robot2]"/>
+  <arg name="x_pos" default="-2.0"/>
+  <arg name="y_pos" default="-0.5"/>
+  <arg name="z_pos" default="0.0"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="paused" value="true"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find robot2_description)/urdf/$(arg model).urdf.xacro" />
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf"  args="-urdf -model $(arg model) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+
+  <!-- spawn environment -->
+  <include file="$(find robot2_gazebo)/launch/includes/spawn_scene1.launch.xml" />
+
+  <!-- param for camera -->
+  <!-- Robot state publisher -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" >
+    <param name="publish_frequency" type="double" value="30.0" />
+  </node>
+
+  <!-- rviz for camera -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find realsense2_description)/rviz/urdf.rviz" required="true" />
+
+</launch>
