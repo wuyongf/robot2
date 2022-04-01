@@ -1,8 +1,26 @@
 <launch>
   <arg name="model" default="$(env ROBOT_MODEL)" doc="model type [robot2]"/>
-  <param name="model" value="$(arg model)"/>
+  <arg name="tf_prefix" default="" doc="tf_prefix to be used by gazebo plugins and in the robot's urdf etc." />
 
-  <!-- turtlebot3_teleop_key already has its own built in velocity smoother -->
-  <node pkg="robot2_teleop" type="robot2_teleop_key" name="robot2_teleop_keyboard"  output="screen">
-  </node>
+  <arg name="namespace" default="$(arg tf_prefix)" doc="Namespace to push all topics into."/>
+  <group if="$(eval namespace != '')">
+    <group ns="$(arg namespace)">
+      
+      <param name="model" value="$(arg model)"/>
+
+      <!-- turtlebot3_teleop_key already has its own built in velocity smoother -->
+      <node pkg="robot2_teleop" type="robot2_teleop_key" name="robot2_teleop_keyboard"  output="screen">
+      </node>
+    </group>
+  </group>
+
+  <group unless="$(eval namespace != '')">
+    
+      <param name="model" value="$(arg model)"/>
+
+      <!-- turtlebot3_teleop_key already has its own built in velocity smoother -->
+      <node pkg="robot2_teleop" type="robot2_teleop_key" name="robot2_teleop_keyboard"  output="screen">
+      </node>
+  </group>
+
 </launch>

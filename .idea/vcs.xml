@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/camera/realsense2_description" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/camera/realsense_gazebo_plugin" vcs="Git" />
   </component>
 </project>

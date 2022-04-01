@@ -1,0 +1,17 @@
+<launch>
+  <arg name="model" default="$(env ROBOT_MODEL)" doc="model type [robot2]"/>
+  <arg name="x_pos" default="-2.0"/>
+  <arg name="y_pos" default="-0.5"/>
+  <arg name="z_pos" default="0.0" />
+  <!-- <arg name="tf_prefix" default="$(arg tf_prefix)" doc="Namespace to push all topics into."/> -->
+
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf"  args="-urdf -model $(arg model) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description"/>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" >
+    <param name="publish_frequency" type="double" value="30.0" />
+  </node>
+
+  <!-- rviz for camera -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find realsense2_description)/rviz/urdf.rviz" required="true" />
+
+</launch>
